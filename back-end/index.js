@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import app from "./src/app.js";
 
-const app = express();
+dotenv.config();
 app.use(cors());
 const PORT = 3310;
-cors;
 
 app.listen(PORT, (error) => {
   if (!error)
