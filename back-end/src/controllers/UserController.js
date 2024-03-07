@@ -15,6 +15,7 @@ class UserController {
       const { email } = req.params;
       const result = await UserManager.read(email);
       res.status(200).json(result);
+      console.log(result);
     } catch (error) {
       res.status(401).json({ message: "Demande refusée" });
     }

@@ -6,8 +6,8 @@ const route = express.Router();
 
 route.get(
   "/users",
-  Authentification.authenticate,
-  Authentification.authenticateAdmin,
+  // Authentification.authenticate,
+  // Authentification.authenticateAdmin,
   UserController.browse
 );
 route.get(
@@ -15,12 +15,7 @@ route.get(
   Authentification.authenticate,
   UserController.getProfile
 );
-route.get(
-  "/users/:email",
-  Authentification.authenticate,
-  Authentification.authenticateAdmin,
-  UserController.read
-);
+route.get("/users/:email", Authentification.authenticate, UserController.read);
 route.get("/users/:email/:password", UserController.login);
 route.post("/users", UserController.add);
 route.delete(
