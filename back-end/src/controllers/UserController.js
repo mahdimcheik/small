@@ -1,4 +1,6 @@
 import UserManager from "../mangers/UserManager.js";
+import Authentification from "../middlewares/Authentification.js";
+
 class UserController {
   static async browse(req, res) {
     try {
@@ -24,7 +26,9 @@ class UserController {
 
       const result = await UserManager.login(email, password);
       if (result) {
-        res.status(200).json(result);
+        const token = await Authentification.generateToken(result);
+        console.log("token", token);
+        res.status(200).json({ ...result, token });
       } else {
         res.status(401).json({ message: "Mauvais identifiants" });
       }
@@ -48,7 +52,7 @@ class UserController {
   }
   static async delete(req, res) {
     try {
-      const { email } = req.params;
+      const email = req.userInfo.email;
       const result = await UserManager.delete(email);
       res.status(202).json({ affectedRows: result.affectedRows });
     } catch (error) {
@@ -57,7 +61,7 @@ class UserController {
   }
   static async update(req, res) {
     try {
-      const { email } = req.params;
+      const email = req.userInfo.email;
       const props = req.body;
       const affectedRows = await UserManager.update(email, props);
       res.status(202).json({ affectedRows });

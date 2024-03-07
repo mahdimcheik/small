@@ -78,7 +78,7 @@ class UserManager {
     let hashedPassword = "";
     for (const [key, value] of Object.entries(props)) {
       if (key === "password") {
-        hashedPassword = UserManager.hashing(password);
+        hashedPassword = await UserManager.hashing(props.password);
         sql += `${sqlValues.length ? "," : ""} ${key} = ?`;
         sqlValues.push(hashedPassword);
       } else if (key !== "email") {
@@ -89,6 +89,7 @@ class UserManager {
     sql += ` where email = ?`;
     sqlValues.push(email);
     console.log("sql", sql);
+    console.log("sql", sqlValues);
     const [res] = await client.query(sql, sqlValues);
     return res.affectedRows;
   }
