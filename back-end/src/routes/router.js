@@ -23,7 +23,11 @@ route.get(
 );
 route.get("/users/:email/:password", UserController.login);
 route.post("/users", UserController.add);
-route.delete("/users", Authentification.authenticate, UserController.delete);
+route.delete(
+  "/users/:password",
+  Authentification.authenticate,
+  UserController.delete
+);
 route.patch("/users", Authentification.authenticate, UserController.update);
 
 export default route;

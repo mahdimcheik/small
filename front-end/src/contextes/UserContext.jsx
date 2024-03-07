@@ -19,7 +19,6 @@ export default function UserContextProvider({ children }) {
       if (result) {
         validationService.setLocalStorage("token", result.token);
         setUserInfo({ ...data });
-        console.info(result);
         axios.defaults.headers.common.Authorization = `Bearer ${result.token}`;
         setMessageBack("");
       }
@@ -31,7 +30,49 @@ export default function UserContextProvider({ children }) {
   async function logout() {
     try {
       validationService.emptyLocalStorage("token");
-      setUserInfo({});
+      setUserInfo(() => {});
+    } catch (error) {
+      setMessageBack("Mauvais identifiants");
+    }
+  }
+
+  async function update(user) {
+    try {
+      const { data } = await axios.patch(`http://localhost:3310/users`, user);
+      const result = data;
+      if (result?.affectedRows) {
+        setMessageBack("updated");
+        return data;
+      } else return null;
+    } catch (error) {
+      setMessageBack("Mauvais identifiants");
+    }
+  }
+
+  async function create(user) {
+    try {
+      const { data } = await axios.post(`http://localhost:3310/users`, user);
+      const result = data;
+      if (result?.affectedRows) {
+        setMessageBack("created");
+        return data;
+      } else return null;
+    } catch (error) {
+      setMessageBack("WTF");
+    }
+  }
+
+  async function deleteUser(password) {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:3310/users/${password}`
+      );
+      const result = data;
+      if (result) {
+        setMessageBack("deleted");
+        await logout();
+        return result;
+      } else return null;
     } catch (error) {
       setMessageBack("Mauvais identifiants");
     }
@@ -46,6 +87,9 @@ export default function UserContextProvider({ children }) {
       messageBack,
       setMessageBack,
       logout,
+      update,
+      deleteUser,
+      create,
     }),
     [userInfo, setUserInfo, messageBack, setMessageBack]
   );
@@ -54,10 +98,10 @@ export default function UserContextProvider({ children }) {
   useEffect(() => {
     if (userProfil) {
       setUserInfo(userProfil);
-      console.log("profil", userProfil);
+      validationService.setLocalStorage("token", userProfil.token);
+      axios.defaults.headers.common.Authorization = `Bearer ${userProfil.token}`;
     } else {
       setUserInfo({});
-      console.log("profil", userProfil);
     }
   }, []);
   return (

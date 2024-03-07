@@ -7,6 +7,8 @@ import User from "./pages/User.jsx";
 import UserContextProvider from "./contextes/UserContext.jsx";
 import ValidationService from "./services/ValidationService.js";
 import axios from "axios";
+import UserUpdate from "./pages/UserUpdate.jsx";
+import Inscription from "./pages/Inscription.jsx";
 
 const validationService = new ValidationService();
 const router = createBrowserRouter([
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: <User />,
+      },
+      {
+        path: "/user/update",
+        element: <UserUpdate />,
+      },
+      {
+        path: "/user/inscription",
+        element: <Inscription />,
       },
     ],
   },

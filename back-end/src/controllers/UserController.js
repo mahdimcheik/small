@@ -63,8 +63,15 @@ class UserController {
   static async delete(req, res) {
     try {
       const email = req.userInfo.email;
-      const result = await UserManager.delete(email);
-      res.status(202).json({ affectedRows: result.affectedRows });
+      const { password } = req.params;
+      const connected = await UserManager.login(email, password);
+      if (connected) {
+        const result = await UserManager.delete(email);
+        res.status(202).json({ affectedRows: result.affectedRows });
+      } else
+        res
+          .status(401)
+          .json({ message: `Demande refusée: Mauvais identifiant` });
     } catch (error) {
       res.status(401).json({ message: `Demande refusée: ${error.message}` });
     }
@@ -73,8 +80,14 @@ class UserController {
     try {
       const email = req.userInfo.email;
       const props = req.body;
-      const affectedRows = await UserManager.update(email, props);
-      res.status(202).json({ affectedRows });
+      const result = await UserManager.login(email, props.password);
+      if (result) {
+        const affectedRows = await UserManager.update(email, props);
+        res.status(202).json({ affectedRows });
+      } else
+        res
+          .status(401)
+          .json({ message: `Mise à jour refusée : Mauvais identifiants` });
     } catch (error) {
       res
         .status(401)
