@@ -11,6 +11,11 @@ route.get(
   UserController.browse
 );
 route.get(
+  "/users/getprofile",
+  Authentification.authenticate,
+  UserController.getProfile
+);
+route.get(
   "/users/:email",
   Authentification.authenticate,
   Authentification.authenticateAdmin,

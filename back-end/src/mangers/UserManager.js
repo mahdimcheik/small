@@ -65,7 +65,6 @@ class UserManager {
       const [result] = await client.query(`delete from users WHERE email = ?`, [
         email,
       ]);
-      console.log("affectedRows ", result);
       return result;
     } catch (error) {
       console.error(error.message);
@@ -88,8 +87,6 @@ class UserManager {
     }
     sql += ` where email = ?`;
     sqlValues.push(email);
-    console.log("sql", sql);
-    console.log("sql", sqlValues);
     const [res] = await client.query(sql, sqlValues);
     return res.affectedRows;
   }

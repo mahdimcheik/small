@@ -5,7 +5,6 @@ class UserController {
   static async browse(req, res) {
     try {
       const result = await UserManager.browse();
-      console.log(result);
       res.status(200).json(result);
     } catch (error) {
       res.status(401).json({ message: "Demande refusée" });
@@ -23,14 +22,25 @@ class UserController {
   static async login(req, res) {
     try {
       const { email, password } = req.params;
-
       const result = await UserManager.login(email, password);
       if (result) {
         const token = await Authentification.generateToken(result);
-        console.log("token", token);
         res.status(200).json({ ...result, token });
       } else {
-        res.status(401).json({ message: "Mauvais identifiants" });
+        res.status(404).json({ message: "Mauvais identifiants" });
+      }
+    } catch (error) {
+      res.status(401).json({ message: "Mauvais identifiants" });
+    }
+  }
+  static async getProfile(req, res) {
+    try {
+      const result = await UserManager.read(req.userInfo.email);
+      if (result) {
+        const token = await Authentification.generateToken(result);
+        res.status(200).json({ ...result, token });
+      } else {
+        res.status(404).json({ message: "Mauvais identifiants" });
       }
     } catch (error) {
       res.status(401).json({ message: "Mauvais identifiants" });
