@@ -19,10 +19,10 @@ app.use(express.static(reactBuildPath));
 app.use("/", route);
 app.get(
   "*.*",
-  // express.static(path.join(__dirname, "../public"), { maxAge: "1y" })
-  (req, res) => {
-    res.sendFile(`${reactBuildPath}/index.html`);
-  }
+  express.static(path.join(__dirname, "../public"), { maxAge: "1y" })
+  // (req, res) => {
+  //   res.sendFile(`${reactBuildPath}/index.html`);
+  // }
 );
 
 export default app;
