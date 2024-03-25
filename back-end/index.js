@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import app from "./src/app.js";
 
 dotenv.config();
-app.use(cors());
 const PORT = 3310;
 
 app.listen(PORT, (error) => {

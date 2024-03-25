@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "migrate": "cd back-end && node migrate.js",
     "postinstall": "cross-env-shell \"husky install && cd ./front-end && npm install && cd ../back-end && npm install\"",
     "dev": "cross-env-shell 'concurrently -c green,yellow -t \"HH:mm:ss\" -p \"{name} {time}\" \"npm:dev-*\"'",
     "dev-front": "cross-env-shell \"cd ./front-end && npm run dev\"",

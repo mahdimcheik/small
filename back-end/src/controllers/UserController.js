@@ -4,6 +4,7 @@ import Authentification from "../middlewares/Authentification.js";
 class UserController {
   static async browse(req, res) {
     try {
+      console.log("triggered");
       const result = await UserManager.browse();
       res.status(200).json(result);
     } catch (error) {

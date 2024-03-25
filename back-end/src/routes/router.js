@@ -4,18 +4,13 @@ import Authentification from "../middlewares/Authentification.js";
 
 const route = express.Router();
 
+route.get("/users", UserController.browse);
 route.get(
-  "users",
-  // Authentification.authenticate,
-  // Authentification.authenticateAdmin,
-  UserController.browse
-);
-route.get(
-  "users/getprofile",
+  "/users/getprofile",
   Authentification.authenticate,
   UserController.getProfile
 );
-route.get("/users/:email", Authentification.authenticate, UserController.read);
+route.get("/users/:email", UserController.read);
 route.get("/users/:email/:password", UserController.login);
 route.post("/users", UserController.add);
 route.delete(

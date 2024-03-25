@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import route from "./routes/router.js";
+import routeVideo from "./routes/routeVideo.js";
+import routeFavorite from "./routes/routeFavorite.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -17,6 +19,8 @@ const reactBuildPath = path.join(__dirname, "/../../front-end/dist");
 app.use(express.static(reactBuildPath));
 
 app.use("/", route);
+app.use("/", routeVideo);
+app.use("/", routeFavorite);
 app.get(
   "*.*",
   express.static(path.join(__dirname, "../public"), { maxAge: "1y" })
